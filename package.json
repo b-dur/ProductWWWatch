@@ -1,0 +1,26 @@
+{
+  "name": "produtwatch-www",
+  "version": "1.0.0",
+  "private": true,
+  "description": "WWW site for product watch.",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel ./public/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b-dur/ProductWWWatch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/b-dur/ProductWWWatch/issues"
+  },
+  "homepage": "https://github.com/b-dur/ProductWWWatch#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.11.0",
+    "typescript": "^3.3.3"
+  }
+}
