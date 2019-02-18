@@ -1,3 +1,5 @@
+import "@webcomponents/custom-elements/src/native-shim";
+
 import { getCode, getFormValue } from "./utils";
 
 interface IWatcher {
