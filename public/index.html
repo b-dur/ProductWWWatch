@@ -17,9 +17,30 @@
     </section>
 
     <section class="main-content">
-      Watchers:
+      <h2>New Watcher</h2>
+      <form name="addWatcher">
+        <label
+          >Price trigger:
+          <input
+            name="triggerPrice"
+            type="number"
+            required
+            placeholder="when price gets belove"
+            min="1"
+          />
+        </label>
+        <label>
+          Url:
+          <input name="url" type="url" required placeholder="pricerunner url"
+        /></label>
+        <input type="submit" value="Add" />
+        <input name="createdAt" type="hidden" value="" />
+      </form>
+    </section>
+    <section class="main-content">
+      <h2>Watchers</h2>
       <ul id="watcherlist">
-        <li></li>
+        <li>loading...</li>
       </ul>
     </section>
 

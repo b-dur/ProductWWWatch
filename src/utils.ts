@@ -8,3 +8,14 @@ export const getCode = (): string => {
   }
   return code;
 };
+
+export const getFormValue = (form: HTMLFormElement): any => {
+  const formValues = {};
+  for (const e of form.elements) {
+    const input = <HTMLInputElement>e;
+    if (input.name) {
+      formValues[input.name] = input.value;
+    }
+  }
+  return formValues;
+};
