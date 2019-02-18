@@ -13,7 +13,7 @@ async function loadContent() {
   const url = `https://productwatch.azurewebsites.net/api/api?code=${getCode()}`;
   const resp = await fetch(url);
   const data: IWatcher[] = await resp.json();
-    const watcherList = document.getElementById("watcherlist");
+  const watcherList = document.getElementById("watcherlist");
   if (data.length) {
     watcherList.innerHTML = data
       .map(
@@ -24,6 +24,11 @@ async function loadContent() {
 </li-deletable>`
       )
       .join();
+
+    watcherList.addEventListener("delete", (e: Event) => {
+      const elm = e.srcElement as HTMLElement;
+      removeWatcher(elm.id);
+    });
   } else {
     watcherList.innerHTML = `<li>No data found</li>`;
   }
@@ -38,10 +43,9 @@ document.forms
     formValues.createdAt = Date.now();
 
     AddWatcher(formValues);
-    console.log("TCL: formValues", formValues);
   });
 
-export const AddWatcher = async (watcher: IWatcher) => {
+const AddWatcher = async (watcher: IWatcher) => {
   const url = `https://productwatch.azurewebsites.net/api/api?code=${getCode()}`;
   const resp = await fetch(url, {
     method: "POST",
@@ -50,6 +54,13 @@ export const AddWatcher = async (watcher: IWatcher) => {
       "Content-Type": "application/json"
     }
   });
+
+  const watchers = await resp.json();
+};
+
+const removeWatcher = async (watcherId: string) => {
+  const url = `https://productwatch.azurewebsites.net/api/api/${watcherId}?code=${getCode()}`;
+  const resp = await fetch(url, { method: "DELETE" });
 
   const watchers = await resp.json();
 };
