@@ -1,0 +1,38 @@
+<template id="template-li-deletable">
+  <style>
+    :host {
+      display: flex;
+      padding: 16px;
+    }
+  </style>
+  <li>
+    <slot></slot>
+    <input id="deleteButton" type="button" value="delete" />
+  </li>
+</template>
+<script>
+  tmpl = document.currentScript.ownerDocument.querySelector(
+    "#template-li-deletable"
+  );
+
+  customElements.define(
+    "li-deletable",
+    class liDeletable extends HTMLElement {
+      constructor() {
+        super();
+
+        const root = this.attachShadow({ mode: "open", delegatesFocus: true });
+        root.appendChild(tmpl.content.cloneNode(true));
+
+        this.shadowRoot.getElementById("deleteButton").addEventListener(
+          "click",
+
+          this.dispatchEvent.bind(
+            this,
+            new Event("delete", { bubbles: true, cancelable: true })
+          )
+        );
+      }
+    }
+  );
+</script>

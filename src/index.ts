@@ -3,6 +3,7 @@ import "@webcomponents/custom-elements/src/native-shim";
 import { getCode, getFormValue } from "./utils";
 
 interface IWatcher {
+  _id: string;
   createdAt: number;
   triggerPrice: number;
   url: string;
@@ -12,17 +13,19 @@ async function loadContent() {
   const url = `https://productwatch.azurewebsites.net/api/api?code=${getCode()}`;
   const resp = await fetch(url);
   const data: IWatcher[] = await resp.json();
+    const watcherList = document.getElementById("watcherlist");
   if (data.length) {
-    document.getElementById("watcherlist").innerHTML = data
+    watcherList.innerHTML = data
       .map(
         x =>
-          `<li>Created at: ${new Date(x.createdAt)} <br/> Trigger price: ${
-            x.triggerPrice
-          } <br/> Url: ${x.url}</li>`
+          `<li-deletable id="${x._id}">Created at: ${new Date(
+            x.createdAt
+          )}<br/>Trigger price: ${x.triggerPrice} <br/> Url: ${x.url}
+</li-deletable>`
       )
       .join();
   } else {
-    document.getElementById("watcherlist").innerHTML = `<li>No data found</li>`;
+    watcherList.innerHTML = `<li>No data found</li>`;
   }
 }
 loadContent();
