@@ -22,12 +22,7 @@ function updateWatcherList(watchers: IWatcher[]) {
           )}<br/>Trigger price: ${x.triggerPrice} <br/> Url: ${x.url}
 </li-deletable>`
       )
-      .join();
-
-    watcherList.addEventListener("delete", (e: Event) => {
-      const elm = e.srcElement as HTMLElement;
-      removeWatcher(elm.id);
-    });
+      .join("");
   } else {
     watcherList.innerHTML = `<li>No data found</li>`;
   }
@@ -37,6 +32,7 @@ async function loadContent() {
   const url = `${baseUrl}?code=${getCode()}`;
   const resp = await fetch(url);
   const data: IWatcher[] = await resp.json();
+
   updateWatcherList(data);
 }
 loadContent();
@@ -51,9 +47,16 @@ document.forms
     AddWatcher(formValues);
   });
 
+document
+  .getElementById("watcherlist")
+  .addEventListener("delete", (e: Event) => {
+    const elm = e.srcElement as HTMLElement;
+    removeWatcher(elm.id);
+  });
+
 const AddWatcher = async (watcher: IWatcher) => {
   const url = `${baseUrl}?code=${getCode()}`;
-  const resp = await fetch(url, {
+  await fetch(url, {
     method: "POST",
     body: JSON.stringify(watcher),
     headers: {
@@ -61,13 +64,12 @@ const AddWatcher = async (watcher: IWatcher) => {
     }
   });
 
-  const watchers = await resp.json();
-  updateWatcherList(watchers);
+  loadContent();
 };
 
 const removeWatcher = async (watcherId: string) => {
   const url = `${baseUrl}/${watcherId}?code=${getCode()}`;
-  const resp = await fetch(url, { method: "DELETE" });
+  await fetch(url, { method: "DELETE" });
 
-  const watchers = await resp.json();
+  loadContent();
 };
