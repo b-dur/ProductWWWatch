@@ -2,6 +2,8 @@ import "@webcomponents/custom-elements/src/native-shim";
 
 import { getCode, getFormValue } from "./utils";
 
+const baseUrl = `https://productwatch.azurewebsites.net/api/watchers`;
+
 interface IWatcher {
   _id: string;
   createdAt: number;
@@ -10,7 +12,7 @@ interface IWatcher {
 }
 
 async function loadContent() {
-  const url = `https://productwatch.azurewebsites.net/api/api?code=${getCode()}`;
+  const url = `${baseUrl}?code=${getCode()}`;
   const resp = await fetch(url);
   const data: IWatcher[] = await resp.json();
   const watcherList = document.getElementById("watcherlist");
@@ -46,7 +48,7 @@ document.forms
   });
 
 const AddWatcher = async (watcher: IWatcher) => {
-  const url = `https://productwatch.azurewebsites.net/api/api?code=${getCode()}`;
+  const url = `${baseUrl}?code=${getCode()}`;
   const resp = await fetch(url, {
     method: "POST",
     body: JSON.stringify(watcher),
@@ -59,7 +61,7 @@ const AddWatcher = async (watcher: IWatcher) => {
 };
 
 const removeWatcher = async (watcherId: string) => {
-  const url = `https://productwatch.azurewebsites.net/api/api/${watcherId}?code=${getCode()}`;
+  const url = `${baseUrl}/${watcherId}?code=${getCode()}`;
   const resp = await fetch(url, { method: "DELETE" });
 
   const watchers = await resp.json();
