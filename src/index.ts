@@ -11,13 +11,10 @@ interface IWatcher {
   url: string;
 }
 
-async function loadContent() {
-  const url = `${baseUrl}?code=${getCode()}`;
-  const resp = await fetch(url);
-  const data: IWatcher[] = await resp.json();
+function updateWatcherList(watchers: IWatcher[]) {
   const watcherList = document.getElementById("watcherlist");
-  if (data.length) {
-    watcherList.innerHTML = data
+  if (watchers.length) {
+    watcherList.innerHTML = watchers
       .map(
         x =>
           `<li-deletable id="${x._id}">Created at: ${new Date(
@@ -34,6 +31,13 @@ async function loadContent() {
   } else {
     watcherList.innerHTML = `<li>No data found</li>`;
   }
+}
+
+async function loadContent() {
+  const url = `${baseUrl}?code=${getCode()}`;
+  const resp = await fetch(url);
+  const data: IWatcher[] = await resp.json();
+  updateWatcherList(data);
 }
 loadContent();
 
@@ -58,6 +62,7 @@ const AddWatcher = async (watcher: IWatcher) => {
   });
 
   const watchers = await resp.json();
+  updateWatcherList(watchers);
 };
 
 const removeWatcher = async (watcherId: string) => {
