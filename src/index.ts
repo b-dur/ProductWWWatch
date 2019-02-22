@@ -1,5 +1,5 @@
 import "@webcomponents/custom-elements/src/native-shim";
-
+import "./webComponents/li-deletable";
 import { getCode, getFormValue } from "./utils";
 
 const baseUrl = `https://productwatch.azurewebsites.net/api/watchers`;
@@ -19,7 +19,7 @@ function updateWatcherList(watchers: IWatcher[]) {
         x =>
           `<li-deletable id="${x._id}">Created at: ${new Date(
             x.createdAt
-          )}<br/>Trigger price: ${x.triggerPrice} <br/> Url: ${x.url}
+          )}<br/>Trigger price: ${x.triggerPrice}<br/> Url: ${x.url}
 </li-deletable>`
       )
       .join("");
