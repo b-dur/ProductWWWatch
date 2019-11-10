@@ -1,5 +1,4 @@
 import "@webcomponents/custom-elements/src/native-shim";
-import "./webComponents/li-deletable";
 import { getCode, getFormValue } from "./utils";
 
 const baseUrl = `https://productwatch.azurewebsites.net/api/watchers`;
@@ -15,17 +14,20 @@ function updateWatcherList(watchers: IWatcher[]) {
   const watcherList = document.getElementById("watcherlist");
   if (watchers.length) {
     watcherList.innerHTML = watchers
-      .map(
-        x =>
-          `<li-deletable id="${x._id}">Created at: ${new Date(
-            x.createdAt
-          )}<br/>Trigger price: ${x.triggerPrice}<br/> Url: ${x.url}
-</li-deletable>`
-      )
+      .map(renderItem)
       .join("");
   } else {
     watcherList.innerHTML = `<li>No data found</li>`;
   }
+}
+
+function renderItem(watcher: IWatcher): string {
+  return `<li>
+  Created at: ${new Date(watcher.createdAt)}<br/>
+  Trigger price: ${watcher.triggerPrice}<br/>
+  Url: <a href="${watcher.url}" target="_blank">${watcher.url}</a><br/>
+  <button name="delete watcher" value="${watcher._id}" type="button">delete</button>
+</li>`;
 }
 
 async function loadContent() {
@@ -73,3 +75,13 @@ const removeWatcher = async (watcherId: string) => {
 
   loadContent();
 };
+
+
+document.addEventListener('click', function (e) {
+  if (isButton(e.target) && e.target.name === 'delete watcher') {
+    removeWatcher(e.target.value)
+  }
+})
+
+const isButton = (element: EventTarget): element is HTMLButtonElement => element instanceof HTMLButtonElement;
+
